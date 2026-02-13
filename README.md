@@ -1,6 +1,6 @@
 # Poker Bankroll Managment
 
-Web based poker banroll management app.
+Web based poker bankroll management app.
 
 ## Server setup
 

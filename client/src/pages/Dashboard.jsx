@@ -5,7 +5,11 @@ const Dashboard = () => {
   return (
     <>
       <PageTitle title={`Dashboard`} />
-      <section>Dashboard</section>
+      <section>
+        <div>Balance</div>
+        <div>Now Playing</div>
+        <div>Stats</div>
+      </section>
     </>
   )
 }
