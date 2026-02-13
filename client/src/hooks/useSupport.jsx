@@ -8,31 +8,31 @@ export const useSupport = () => {
     return data
   }
 
-  const getSupportTicket = async (id) => {
+  const getSupportTicketById = async id => {
     const data = await get(`/support/${id}`)
     return data
   }
 
-  const createSupportTicket = async (formData) => {
+  const createSupportTicket = async formData => {
     const data = await post('/support', formData)
     return data
   }
 
-  const updateSupportTicket = async (formData) => {
+  const updateSupportTicket = async formData => {
     const data = await put('/support', formData)
     return data
   }
 
-  const deleteSupportTicket = async (id) => {
+  const deleteSupportTicket = async id => {
     const data = await del(`/support/${id}`)
     return data
   }
 
   return {
     getSupportTickets,
-    getSupportTicket,
+    getSupportTicketById,
     createSupportTicket,
     updateSupportTicket,
-    deleteSupportTicket,
+    deleteSupportTicket
   }
 }

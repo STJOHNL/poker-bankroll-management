@@ -20,6 +20,7 @@ import Dashboard from './pages/Dashboard'
 import Profile from './pages/Profile'
 import Admin from './pages/Admin'
 import Support from './pages/Support'
+import CreateSession from './pages/CreateSession'
 import Session from './pages/Session'
 
 const router = createBrowserRouter(
@@ -89,7 +90,15 @@ const router = createBrowserRouter(
           }
         />
         <Route
-          path='session'
+          path='session/new'
+          element={
+            <PrivateRoute>
+              <CreateSession />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='session/:id'
           element={
             <PrivateRoute>
               <Session />

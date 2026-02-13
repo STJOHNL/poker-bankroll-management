@@ -26,6 +26,8 @@ const NavbarPrivate = () => {
 
   return (
     <nav>
+      <NavLink to={`/dashboard`}>Dashboard</NavLink>
+      <NavLink to={`/session/new`}>New Session</NavLink>
       <NavLink to={`/profile/${user?._id}`}>Profile</NavLink>
       <div onClick={() => handleSignOut()}>Log out</div>
     </nav>

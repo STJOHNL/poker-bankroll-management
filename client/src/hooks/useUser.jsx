@@ -8,31 +8,31 @@ export const useUser = () => {
     return data
   }
 
-  const getUser = async (id) => {
+  const getUserById = async id => {
     const data = await get(`/user/${id}`)
     return data
   }
 
-  const createUser = async (formData) => {
+  const createUser = async formData => {
     const data = await post('/user', formData)
     return data
   }
 
-  const updateUser = async (formData) => {
+  const updateUser = async formData => {
     const data = await put('/user', formData)
     return data
   }
 
-  const deleteUser = async (id) => {
+  const deleteUser = async id => {
     const data = await del(`/user/${id}`)
     return data
   }
 
   return {
     getUsers,
-    getUser,
+    getUserById,
     createUser,
     updateUser,
-    deleteUser,
+    deleteUser
   }
 }
