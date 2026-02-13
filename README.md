@@ -1,4 +1,6 @@
-# Edgeucated Bet
+# Poker Bankroll Managment
+
+Web based poker banroll management app.
 
 ## Server setup
 
