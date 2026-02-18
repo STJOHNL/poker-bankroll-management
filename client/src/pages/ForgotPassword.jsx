@@ -14,38 +14,39 @@ const ForgotPassword = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-
-    const res = await forgotPassword({ email: email })
-
+    const res = await forgotPassword({ email })
     if (res) {
-      toast.success(`Email sent to ${email}`)
+      toast.success(`Reset link sent to ${email}`)
       navigate('/')
     }
   }
 
   return (
     <>
-      <PageTitle
-        title={'Forgot password'}
-        hideTitle
-      />
-      <form onSubmit={handleSubmit}>
-        <h1 className='heading-lg'>Forgot password</h1>
-        <label htmlFor='email'>Email</label>
-        <input
-          type='email'
-          name='email'
-          id='email'
-          placeholder='Email'
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          autoFocus
-          required
-        />
-        <button>Send password reset</button>
-      </form>
-      <div>
-        <Link to='/sign-in'>Return to sign in</Link>
+      <PageTitle title='Forgot Password' hideTitle />
+      <div className='auth-page'>
+        <form onSubmit={handleSubmit}>
+          <h2>Reset Password</h2>
+          <div className='form__section'>
+            <div className='form__field'>
+              <label htmlFor='email'>Email</label>
+              <input
+                type='email'
+                name='email'
+                id='email'
+                placeholder='name@email.com'
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                autoFocus
+                required
+              />
+            </div>
+          </div>
+          <button type='submit'>Send Reset Link</button>
+        </form>
+        <div className='auth-page__links'>
+          <Link to='/sign-in'>Back to Sign In</Link>
+        </div>
       </div>
     </>
   )

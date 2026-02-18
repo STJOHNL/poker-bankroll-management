@@ -20,23 +20,14 @@ import authRoutes from './routes/auth.js'
 import userRoutes from './routes/user.js'
 import supportRoutes from './routes/support.js'
 import sessionRoutes from './routes/session.js'
+import transactionRoutes from './routes/transaction.js'
 
 // Connect to MongoDB
 connectDB()
 
 const app = express()
 
-// Middleware
-app.use(express.json({ extended: true }))
-app.use(express.urlencoded({ extended: true }))
-
-// Log
-app.use(logger('dev'))
-
-// Cookie Parser
-app.use(cookieParser())
-
-// CORS
+// CORS must come first so headers are present on all responses (including errors)
 if (process.env.NODE_ENV === 'development') {
   app.use(
     cors({
@@ -45,6 +36,16 @@ if (process.env.NODE_ENV === 'development') {
     })
   )
 }
+
+// Middleware
+app.use(express.json({ limit: '10mb' }))
+app.use(express.urlencoded({ extended: true }))
+
+// Log
+app.use(logger('dev'))
+
+// Cookie Parser
+app.use(cookieParser())
 
 // Sendgrid connection
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
@@ -59,6 +60,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/support', supportRoutes)
 app.use('/api/session', sessionRoutes)
+app.use('/api/transaction', transactionRoutes)
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../client/dist')))

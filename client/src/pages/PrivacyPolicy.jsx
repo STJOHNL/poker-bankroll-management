@@ -5,22 +5,43 @@ import PageTitle from '../components/PageTitle'
 const PrivacyPolicy = () => {
   return (
     <>
-      <PageTitle title={'Privacy policy'} />
-
-      <section>
-        <h2 className='heading-md'>How We Guard Your Data (It's Our Top Defense Strategy)</h2>
-        <ol>
-          <li>What We Collect: - Basic info you give us (like your email) - How you use our site (pages visited, time spent) - Tech stuff (IP address, browser type)</li>
-          <li>How We Use It: - To make our service better - To keep you in the loop about updates - To follow the law</li>
-          <li>Keeping Your Info Safe: We guard your data like it's the last water bottle at a marathon.</li>
-          <li>Sharing: We don't sell your personal info. We might share general, anonymous data (like "X% of our users love underdogs").</li>
-          <li>Your Rights: You can ask to see, change, or delete your info anytime.</li>
-          <li>
-            Cookies: We use cookies, but not the tasty kind. They help us understand how people use our site. 7. Changes: We might update this policy sometimes. Check back to stay in the know. 8.
-            Questions? Hit us up at <Link to='mailto:logan@devtivity.com'>logan@devtivity.com</Link>. Always happy to chat!
-          </li>
-        </ol>
-      </section>
+      <PageTitle title='Privacy Policy' />
+      <div className='policy'>
+        <p className='policy__updated'>Last updated: January 2025</p>
+        <div className='policy__section'>
+          <h2>What We Collect</h2>
+          <ul>
+            <li>Basic info you provide (name, email)</li>
+            <li>Session data you log (buy-ins, cashouts, venues, notes)</li>
+            <li>Usage data (pages visited, time spent)</li>
+            <li>Technical data (IP address, browser type)</li>
+          </ul>
+        </div>
+        <div className='policy__section'>
+          <h2>How We Use It</h2>
+          <ul>
+            <li>To provide and improve the Poker Tracker service</li>
+            <li>To keep you informed about updates and changes</li>
+            <li>To comply with legal obligations</li>
+          </ul>
+        </div>
+        <div className='policy__section'>
+          <h2>Keeping Your Info Safe</h2>
+          <p>We use industry-standard security measures to protect your data. Your session data is private to your account and is never shared with other users.</p>
+        </div>
+        <div className='policy__section'>
+          <h2>Sharing</h2>
+          <p>We do not sell your personal information. We may share anonymized, aggregate data for analytics purposes but never anything that identifies you individually.</p>
+        </div>
+        <div className='policy__section'>
+          <h2>Your Rights</h2>
+          <p>You can request to view, update, or delete your personal data at any time by contacting us at <Link to='mailto:logan@devtivity.com'>logan@devtivity.com</Link>.</p>
+        </div>
+        <div className='policy__section'>
+          <h2>Cookies</h2>
+          <p>We use cookies to maintain your session and understand how users interact with the app. No third-party advertising cookies are used.</p>
+        </div>
+      </div>
     </>
   )
 }

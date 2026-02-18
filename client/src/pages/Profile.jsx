@@ -24,22 +24,26 @@ const Profile = () => {
     fetchUser(id)
   }, [id])
 
-  // Conditional loader
   if (isLoading) return <Loader />
 
   return (
     <>
+      <PageTitle
+        title={formUser?.fName?.length ? `${formUser.fName} ${formUser.lName}` : 'Profile'}
+        hideTitle
+      />
       {formUser && (
-        <PageTitle
-          title={
-            formUser.fName.length
-              ? `${formUser.fName} ${formUser.lName}`
-              : 'Profile'
-          }
-          hideTitle
-        />
+        <div className='profile-header'>
+          <div className='profile-header__avatar'>
+            {formUser.fName?.[0]}{formUser.lName?.[0]}
+          </div>
+          <div className='profile-header__info'>
+            <h2 className='profile-header__name'>{formUser.fName} {formUser.lName}</h2>
+            <span className='profile-header__email'>{formUser.email}</span>
+          </div>
+        </div>
       )}
-      <UserForm parentData={formUser} buttonText={'Save Changes'} />
+      <UserForm parentData={formUser} buttonText='Save Changes' />
     </>
   )
 }

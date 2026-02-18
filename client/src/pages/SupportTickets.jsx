@@ -67,81 +67,67 @@ const SupportTickets = () => {
   return (
     <>
       <PageTitle title={'Support Tickets'} />
-      <form>
-        <label htmlFor='type'>Type</label>
-        <select
-          name='type'
-          id='type'
-          value={filters.type}
-          onChange={e => handleChange(e, setFilters, filters)}>
-          <option value=''>All Types</option>
-          <option value='Bug'>Bug/Error</option>
-          <option value='Feedback'>Feedback</option>
-          <option value='Feature Request'>Feature Request</option>
-          <option value='Other'>Other</option>
-        </select>
-        <label htmlFor='status'>Status</label>
-        <select
-          name='status'
-          id='status'
-          value={filters.status}
-          onChange={e => handleChange(e, setFilters, filters)}>
-          <option value=''>All Statuses</option>
-          <option value='Completed'>Completed</option>
-          <option value='In Progress'>In Progress</option>
-          <option value='Pending'>Pending</option>
-          <option value='Planned'>Planned</option>
-        </select>
-      </form>
+      <div className='filter-bar'>
+        <div className='filter-bar__field'>
+          <label htmlFor='type'>Type</label>
+          <select
+            name='type'
+            id='type'
+            value={filters.type}
+            onChange={e => handleChange(e, setFilters, filters)}>
+            <option value=''>All Types</option>
+            <option value='Bug'>Bug/Error</option>
+            <option value='Feedback'>Feedback</option>
+            <option value='Feature Request'>Feature Request</option>
+            <option value='Other'>Other</option>
+          </select>
+        </div>
+        <div className='filter-bar__field'>
+          <label htmlFor='status'>Status</label>
+          <select
+            name='status'
+            id='status'
+            value={filters.status}
+            onChange={e => handleChange(e, setFilters, filters)}>
+            <option value=''>All Statuses</option>
+            <option value='Completed'>Completed</option>
+            <option value='In Progress'>In Progress</option>
+            <option value='Pending'>Pending</option>
+            <option value='Planned'>Planned</option>
+          </select>
+        </div>
+      </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th scope='col'>Type</th>
-            <th scope='col'>Message</th>
-            <th scope='col'>Status</th>
-            <th scope='col'>User</th>
-            <th scope='col'>Manage</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredSupportTickets?.length ? (
-            filteredSupportTickets.map(supportTicket => {
-              return (
+      <div className='table-wrapper'>
+        <table className='data-table'>
+          <thead>
+            <tr>
+              <th scope='col'>Type</th>
+              <th scope='col'>Message</th>
+              <th scope='col'>Status</th>
+              <th scope='col'>User</th>
+              <th scope='col'>Manage</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredSupportTickets?.length ? (
+              filteredSupportTickets.map(supportTicket => (
                 <SupportTicketRow
                   key={supportTicket._id}
                   supportTicket={supportTicket}
                   onDeleteCallback={handleDelete}
                 />
-                // <tr key={supportTicket?._id}>
-                //   <td data-label='Type'>{supportTicket.type}</td>
-                //   <td data-label='Message' className='support-table__message'>
-                //     {supportTicket.message}
-                //   </td>
-                //   <td data-label='Status'>{supportTicket.status}</td>
-                //   <td data-label='User'>{supportTicket.user}</td>
-                //   <td data-label='Manage'>
-                //     <Link
-                //       to={`/support-tickets/${supportTicket._id}`}
-                //       className='btn btn--subtle'
-                //     >
-                //       <FaPencilAlt className='btn--icon' />
-                //     </Link>
-                //     <button
-                //       onClick={() => handleDelete(supportTicket._id)}
-                //       className='btn btn--subtle'
-                //     >
-                //       <FaTrashAlt className='btn--icon--danger' />
-                //     </button>
-                //   </td>
-                // </tr>
-              )
-            })
-          ) : (
-            <></>
-          )}
-        </tbody>
-      </table>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} style={{ textAlign: 'center', opacity: 0.45, padding: '2rem' }}>
+                  No tickets found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </>
   )
 }

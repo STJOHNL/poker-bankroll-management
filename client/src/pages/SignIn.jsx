@@ -43,7 +43,6 @@ const SignIn = () => {
         toast.success('Welcome!')
         setToken(res.token)
         setTimeout(() => {
-          // Small delay to ensure toast is visible
           navigate('/dashboard')
         }, 100)
       }
@@ -58,45 +57,43 @@ const SignIn = () => {
 
   return (
     <>
-      <PageTitle
-        title='Sign in'
-        hideTitle={true}
-      />
-      <form onSubmit={handleSubmit}>
-        <h1 className='heading-lg'>Welcome!</h1>
-        <label htmlFor='email'>Email</label>
-        <input
-          type='email'
-          name='email'
-          id='email'
-          placeholder='name@email.com'
-          onChange={handleChange}
-          value={formData.email}
-          required
-          autoFocus
-        />
-
-        <label htmlFor='password'>Password</label>
-        <input
-          type='password'
-          name='password'
-          id='password'
-          placeholder='Password'
-          onChange={handleChange}
-          value={formData.password}
-          required
-        />
-
-        <button
-          type='submit'
-          disabled={isLoading}>
-          Sign in
-        </button>
-      </form>
-
-      <div>
-        <Link to='/sign-up'>Need an account?</Link>
-        <Link to='/forgot-password'>Forgot password?</Link>
+      <PageTitle title='Sign In' hideTitle />
+      <div className='auth-page'>
+        <form onSubmit={handleSubmit}>
+          <h2>Welcome back</h2>
+          <div className='form__section'>
+            <div className='form__field'>
+              <label htmlFor='email'>Email</label>
+              <input
+                type='email'
+                name='email'
+                id='email'
+                placeholder='name@email.com'
+                onChange={handleChange}
+                value={formData.email}
+                required
+                autoFocus
+              />
+            </div>
+            <div className='form__field'>
+              <label htmlFor='password'>Password</label>
+              <input
+                type='password'
+                name='password'
+                id='password'
+                placeholder='Password'
+                onChange={handleChange}
+                value={formData.password}
+                required
+              />
+            </div>
+          </div>
+          <button type='submit' disabled={isLoading}>Sign In</button>
+        </form>
+        <div className='auth-page__links'>
+          <Link to='/sign-up'>Need an account?</Link>
+          <Link to='/forgot-password'>Forgot password?</Link>
+        </div>
       </div>
     </>
   )

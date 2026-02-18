@@ -120,5 +120,31 @@ export default {
     } catch (error) {
       console.log(error)
     }
+  },
+
+  // @desc Import Sessions from CSV
+  // @route POST /api/session/import
+  // @access PRIVATE
+  importSessions: async (req, res, next) => {
+    try {
+      const { sessions } = req.body
+      if (!Array.isArray(sessions) || sessions.length === 0) {
+        return res.status(400).json({ message: 'No sessions provided' })
+      }
+
+      const docs = sessions.map(s => ({
+        type: 'cash',
+        startTime: new Date(s.start),
+        endTime: new Date(s.end),
+        buyin: 0,
+        cashout: parseFloat(s.profit),
+        game: 'Imported',
+      }))
+
+      const inserted = await Session.insertMany(docs)
+      res.status(201).json({ count: inserted.length, sessions: inserted })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

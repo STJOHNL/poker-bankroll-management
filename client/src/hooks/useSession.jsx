@@ -28,11 +28,17 @@ export const useSession = () => {
     return data
   }
 
+  const importSessions = async sessions => {
+    const data = await post('/session/import', { sessions })
+    return data
+  }
+
   return {
     getSessions,
     getSessionById,
     createSession,
     updateSession,
-    deleteSession
+    deleteSession,
+    importSessions
   }
 }

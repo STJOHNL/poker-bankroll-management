@@ -12,7 +12,7 @@ const Support = () => {
 
   return (
     <>
-      <PageTitle title={'Feedback & Support'} hideTitle />
+      <PageTitle title='Feedback & Support' />
       <SupportForm
         buttonText={'Send message'}
         onSubmitCallback={handleSubmit}

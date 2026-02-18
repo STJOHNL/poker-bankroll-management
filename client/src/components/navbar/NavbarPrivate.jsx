@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { FaCoins, FaGauge, FaUser, FaArrowRightFromBracket } from 'react-icons/fa6'
+import { FaCoins, FaGauge, FaUser, FaWallet, FaArrowRightFromBracket } from 'react-icons/fa6'
 // Context
 import { useUserContext } from '../../context/UserContext'
 // Custom hooks
@@ -37,6 +37,13 @@ const NavbarPrivate = () => {
           className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}>
           <FaGauge />
           <span>Dashboard</span>
+        </NavLink>
+
+        <NavLink
+          to='/bankroll'
+          className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}>
+          <FaWallet />
+          <span>Bankroll</span>
         </NavLink>
 
         <NavLink

@@ -22,6 +22,7 @@ import Admin from './pages/Admin'
 import Support from './pages/Support'
 import CreateSession from './pages/CreateSession'
 import Session from './pages/Session'
+import Bankroll from './pages/Bankroll'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -102,6 +103,14 @@ const router = createBrowserRouter(
           element={
             <PrivateRoute>
               <Session />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='bankroll'
+          element={
+            <PrivateRoute>
+              <Bankroll />
             </PrivateRoute>
           }
         />

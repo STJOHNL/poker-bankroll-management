@@ -10,11 +10,14 @@ import CashForm from '../components/forms/CashForm'
 import TournamentForm from '../components/forms/TournamentForm'
 // Hooks
 import { useSession } from '../hooks/useSession'
+import { useBankroll } from '../hooks/useBankroll'
 
 const Dashboard = () => {
   const navigate = useNavigate()
   const { getSessions } = useSession()
+  const { getTransactions } = useBankroll()
   const [sessions, setSessions] = useState([])
+  const [bankrollBalance, setBankrollBalance] = useState(null)
   const [loading, setLoading] = useState(true)
   const [showNewSessionModal, setShowNewSessionModal] = useState(false)
   const [newSessionType, setNewSessionType] = useState('cash')
@@ -33,12 +36,17 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    const fetchSessions = async () => {
-      const data = await getSessions()
-      if (data) setSessions(data)
+    const fetchData = async () => {
+      const [sessData, txData] = await Promise.all([getSessions(), getTransactions()])
+      if (sessData) setSessions(sessData)
+      if (txData) {
+        const deposited = txData.filter(t => t.type === 'deposit').reduce((s, t) => s + t.amount, 0)
+        const withdrawn = txData.filter(t => t.type === 'withdrawal').reduce((s, t) => s + t.amount, 0)
+        setBankrollBalance(deposited - withdrawn)
+      }
       setLoading(false)
     }
-    fetchSessions()
+    fetchData()
   }, [])
 
   const activeSessions = sessions.filter(s => !s.endTime)
@@ -81,7 +89,23 @@ const Dashboard = () => {
     <>
       <PageTitle title='Dashboard' />
 
-      {/* P/L Tracker */}
+      {/* Bankroll Hero */}
+      {bankrollBalance !== null && completedSessions.length > 0 && (
+        <div className='bankroll-hero'>
+          <div className='bankroll-hero__main'>
+            <span className='bankroll-hero__label'>Bankroll</span>
+            <span className={`bankroll-hero__value ${(bankrollBalance + totalProfit) >= 0 ? 'success' : 'error'}`}>
+              {formatCurrency(bankrollBalance + totalProfit)}
+            </span>
+          </div>
+          <div className='bankroll-hero__breakdown'>
+            <span>Net deposits <strong>{formatCurrency(bankrollBalance)}</strong></span>
+            <span>Session P/L <strong className={totalProfit >= 0 ? 'success' : 'error'}>{totalProfit >= 0 ? '+' : ''}{formatCurrency(totalProfit)}</strong></span>
+          </div>
+        </div>
+      )}
+
+      {/* Session Stats */}
       {completedSessions.length > 0 && (
         <div className='stats-row'>
           <div className='stat-box'>
