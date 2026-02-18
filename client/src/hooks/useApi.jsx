@@ -3,8 +3,8 @@ import toast from 'react-hot-toast'
 
 export const useApi = onUnauthorized => {
   const api = axios.create({
-    baseURL: 'http://localhost:5000/api', // Development
-    // baseURL: '/api', // Production
+    // baseURL: 'http://localhost:5000/api', // Development
+    baseURL: '/api', // Production
     withCredentials: true
   })
 
