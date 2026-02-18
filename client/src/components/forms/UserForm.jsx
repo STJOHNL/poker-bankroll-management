@@ -14,6 +14,14 @@ const UserForm = ({ onSubmitCallback, parentData, buttonText }) => {
   const [lName, setLName] = useState(parentData?.lName || '')
   const [email, setEmail] = useState(parentData?.email || '')
 
+  useEffect(() => {
+    if (parentData) {
+      setFName(parentData.fName || '')
+      setLName(parentData.lName || '')
+      setEmail(parentData.email || '')
+    }
+  }, [parentData])
+
   const handleSubmit = async e => {
     e.preventDefault()
 

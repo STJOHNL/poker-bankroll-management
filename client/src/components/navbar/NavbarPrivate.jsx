@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import { FaCoins, FaGauge, FaUser, FaArrowRightFromBracket } from 'react-icons/fa6'
 // Context
 import { useUserContext } from '../../context/UserContext'
 // Custom hooks
@@ -15,7 +16,6 @@ const NavbarPrivate = () => {
     try {
       if (userConfirmed) {
         toast.success('See you later!')
-
         await signOut()
         navigate('/sign-in')
       }
@@ -25,11 +25,32 @@ const NavbarPrivate = () => {
   }
 
   return (
-    <nav>
-      <NavLink to={`/dashboard`}>Dashboard</NavLink>
-      <NavLink to={`/session/new`}>New Session</NavLink>
-      <NavLink to={`/profile/${user?._id}`}>Profile</NavLink>
-      <div onClick={() => handleSignOut()}>Log out</div>
+    <nav className='navbar'>
+      <NavLink to='/dashboard' className='navbar__brand'>
+        <FaCoins />
+        <span>Poker Tracker</span>
+      </NavLink>
+
+      <div className='navbar__links'>
+        <NavLink
+          to='/dashboard'
+          className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}>
+          <FaGauge />
+          <span>Dashboard</span>
+        </NavLink>
+
+        <NavLink
+          to={`/profile/${user?._id}`}
+          className={({ isActive }) => `navbar__link${isActive ? ' navbar__link--active' : ''}`}>
+          <FaUser />
+          <span>Profile</span>
+        </NavLink>
+
+        <button className='navbar__logout' onClick={handleSignOut}>
+          <FaArrowRightFromBracket />
+          <span>Logout</span>
+        </button>
+      </div>
     </nav>
   )
 }

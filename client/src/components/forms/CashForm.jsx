@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 // Custom Hooks
 import { useSession } from '../../hooks/useSession'
 
-const CashForm = ({ onSubmitCallback, parentData, buttonText, showStatus }) => {
+const CashForm = ({ onSubmitCallback, parentData, prefillData, buttonText, showStatus }) => {
   const { createSession, updateSession } = useSession()
   const navigate = useNavigate()
 
@@ -19,16 +19,20 @@ const CashForm = ({ onSubmitCallback, parentData, buttonText, showStatus }) => {
     return `${year}-${month}-${day}T${hours}:${minutes}`
   }
 
+  // Setup fields: prefer parentData (edit), then prefillData (duplicate), then empty
+  const initSource = parentData || prefillData || {}
+
   // Form data
-  const [buyin, setBuyin] = useState(parentData?.buyin || '')
-  const [blinds, setBlinds] = useState(parentData?.blinds || '')
-  const [game, setGame] = useState(parentData?.game || 'Holdem')
-  const [venue, setVenue] = useState(parentData?.venue || '')
-  const [tableSize, setTableSize] = useState(parentData?.tableSize || 8)
+  const [buyin, setBuyin] = useState(initSource.buyin || '')
+  const [blinds, setBlinds] = useState(initSource.blinds || '')
+  const [game, setGame] = useState(initSource.game || 'Holdem')
+  const [venue, setVenue] = useState(initSource.venue || '')
+  const [tableSize, setTableSize] = useState(initSource.tableSize || 8)
+  const [expenses, setExpenses] = useState(initSource.expenses || '')
+  // Result fields: only carry over when editing (parentData), not when duplicating
   const [startTime, setStartTime] = useState(parentData?.startTime ? getLocalDateTime(parentData.startTime) : getLocalDateTime())
   const [endTime, setEndTime] = useState(parentData?.endTime ? getLocalDateTime(parentData.endTime) : '')
   const [cashout, setCashout] = useState(parentData?.cashout || '')
-  const [expenses, setExpenses] = useState(parentData?.expenses || '')
   const [rebuys, setRebuys] = useState(parentData?.rebuys || '')
   const [notes, setNotes] = useState(parentData?.notes || '')
 

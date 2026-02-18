@@ -18,39 +18,32 @@ const CreateSession = () => {
 
   return (
     <>
-      <PageTitle
-        title={'New Session'}
-        hideTitle
-      />
-      <div className='session__container'>
-        {/* Session Type Tabs */}
-        <div className='session__tabs'>
-          <button
-            className={`session__tab ${type === 'cash' ? 'session__tab--active' : ''}`}
-            onClick={() => setType('cash')}>
-            Cash Game
-          </button>
-          <button
-            className={`session__tab ${type === 'tournament' ? 'session__tab--active' : ''}`}
-            onClick={() => setType('tournament')}>
-            Tournament
-          </button>
-        </div>
-
-        {/* Forms */}
-        {type === 'cash' && (
-          <CashForm
-            buttonText={'Start Session'}
-            onSubmitCallback={handleSubmit}
-          />
-        )}
-        {type === 'tournament' && (
-          <TournamentForm
-            buttonText={'Start Session'}
-            onSubmitCallback={handleSubmit}
-          />
-        )}
+      <PageTitle title='New Session' />
+      <div className='session-type-tabs'>
+        <button
+          className={`session-type-tab${type === 'cash' ? ' session-type-tab--active' : ''}`}
+          onClick={() => setType('cash')}>
+          Cash Game
+        </button>
+        <button
+          className={`session-type-tab${type === 'tournament' ? ' session-type-tab--active' : ''}`}
+          onClick={() => setType('tournament')}>
+          Tournament
+        </button>
       </div>
+
+      {type === 'cash' && (
+        <CashForm
+          buttonText='Start Session'
+          onSubmitCallback={handleSubmit}
+        />
+      )}
+      {type === 'tournament' && (
+        <TournamentForm
+          buttonText='Start Session'
+          onSubmitCallback={handleSubmit}
+        />
+      )}
     </>
   )
 }

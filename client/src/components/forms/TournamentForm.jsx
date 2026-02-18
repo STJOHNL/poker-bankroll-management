@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 // Custom Hooks
 import { useSession } from '../../hooks/useSession'
 
-const TournamentForm = ({ onSubmitCallback, parentData, buttonText, showStatus }) => {
+const TournamentForm = ({ onSubmitCallback, parentData, prefillData, buttonText, showStatus }) => {
   const { createSession, updateSession } = useSession()
   const navigate = useNavigate()
 
@@ -19,21 +19,25 @@ const TournamentForm = ({ onSubmitCallback, parentData, buttonText, showStatus }
     return `${year}-${month}-${day}T${hours}:${minutes}`
   }
 
+  // Setup fields: prefer parentData (edit), then prefillData (duplicate), then empty
+  const initSource = parentData || prefillData || {}
+
   // Form data
-  const [name, setName] = useState(parentData?.name || '')
-  const [guarantee, setGuarantee] = useState(parentData?.guarantee || '')
-  const [buyin, setBuyin] = useState(parentData?.buyin || '')
-  const [cashout, setCashout] = useState(parentData?.cashout || '')
-  const [startingStack, setStartingStack] = useState(parentData?.startingStack || '')
-  const [game, setGame] = useState(parentData?.game || 'Holdem')
-  const [venue, setVenue] = useState(parentData?.venue || '')
-  const [tableSize, setTableSize] = useState(parentData?.tableSize || 8)
+  const [name, setName] = useState(initSource.name || '')
+  const [guarantee, setGuarantee] = useState(initSource.guarantee || '')
+  const [buyin, setBuyin] = useState(initSource.buyin || '')
+  const [startingStack, setStartingStack] = useState(initSource.startingStack || '')
+  const [game, setGame] = useState(initSource.game || 'Holdem')
+  const [venue, setVenue] = useState(initSource.venue || '')
+  const [tableSize, setTableSize] = useState(initSource.tableSize || 8)
+  const [bounties, setBounties] = useState(initSource.bounties || false)
+  const [addons, setAddons] = useState(initSource.addons || false)
+  const [addonsCost, setAddonsCost] = useState(initSource.addonsCost || '')
+  // Result fields: only carry over when editing (parentData), not when duplicating
   const [startTime, setStartTime] = useState(parentData?.startTime ? getLocalDateTime(parentData.startTime) : getLocalDateTime())
   const [endTime, setEndTime] = useState(parentData?.endTime ? getLocalDateTime(parentData.endTime) : '')
-  const [bounties, setBounties] = useState(parentData?.bounties || false)
+  const [cashout, setCashout] = useState(parentData?.cashout || '')
   const [bountiesCollected, setBountiesCollected] = useState(parentData?.bountiesCollected || '')
-  const [addons, setAddons] = useState(parentData?.addons || false)
-  const [addonsCost, setAddonsCost] = useState(parentData?.addonsCost || '')
   const [totalPlayers, setTotalPlayers] = useState(parentData?.totalPlayers || '')
   const [finishPosition, setFinishPosition] = useState(parentData?.finishPosition || '')
   const [notes, setNotes] = useState(parentData?.notes || '')

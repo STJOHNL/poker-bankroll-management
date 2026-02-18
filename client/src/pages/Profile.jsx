@@ -8,7 +8,7 @@ import PageTitle from '../components/PageTitle'
 import UserForm from '../components/forms/UserForm'
 
 const Profile = () => {
-  const { getUser } = useUser()
+  const { getUserById } = useUser()
   const { id } = useParams()
 
   const [isLoading, setIsLoading] = useState(false)
@@ -17,7 +17,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUser = async (id) => {
       setIsLoading(true)
-      const res = await getUser(id)
+      const res = await getUserById(id)
       setFormUser(res)
       setIsLoading(false)
     }
