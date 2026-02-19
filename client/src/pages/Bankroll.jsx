@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { FaPlus, FaXmark, FaTrash } from 'react-icons/fa6'
 import { useBankroll } from '../hooks/useBankroll'
 import { useSession } from '../hooks/useSession'
@@ -18,6 +19,7 @@ const calcProfit = session => {
 const Bankroll = () => {
   const { getTransactions, createTransaction, deleteTransaction } = useBankroll()
   const { getSessions } = useSession()
+  const location = useLocation()
 
   const [transactions, setTransactions] = useState([])
   const [sessionPL, setSessionPL] = useState(0)
@@ -33,6 +35,7 @@ const Bankroll = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       const [txData, sessData] = await Promise.all([getTransactions(), getSessions()])
       if (txData) setTransactions(txData)
       if (sessData) {
@@ -42,7 +45,7 @@ const Bankroll = () => {
       setLoading(false)
     }
     fetchData()
-  }, [])
+  }, [location.key]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = async e => {
     e.preventDefault()

@@ -206,6 +206,7 @@ const TournamentCard = ({ session, onUpdate }) => {
                 autoFocus
                 onChange={e => setCashoutInput(e.target.value)}
                 min='0'
+                step='0.01'
               />
 
               {previewProfit !== null && (
