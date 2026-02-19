@@ -6,7 +6,7 @@ export default {
   // @access PRIVATE
   getSessions: async (req, res, next) => {
     try {
-      const sessions = await Session.find().sort({ createdDate: 1 })
+      const sessions = await Session.find().sort({ startTime: -1 })
 
       res.status(200).json(sessions)
     } catch (error) {
