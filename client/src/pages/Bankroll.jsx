@@ -23,6 +23,7 @@ const Bankroll = () => {
 
   const [transactions, setTransactions] = useState([])
   const [sessionPL, setSessionPL] = useState(0)
+  const [activeCost, setActiveCost] = useState(0)
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
 
@@ -40,7 +41,14 @@ const Bankroll = () => {
       if (txData) setTransactions(txData)
       if (sessData) {
         const completed = sessData.filter(s => s.endTime)
+        const active = sessData.filter(s => !s.endTime)
         setSessionPL(completed.reduce((sum, s) => sum + calcProfit(s), 0))
+        setActiveCost(active.reduce((sum, s) => {
+          const buyin = parseFloat(s.buyin) || 0
+          const expenses = parseFloat(s.expenses) || 0
+          const extra = s.type === 'cash' ? (parseFloat(s.rebuys) || 0) : (parseFloat(s.addonsCost) || 0)
+          return sum + buyin + extra + expenses
+        }, 0))
       }
       setLoading(false)
     }
@@ -88,7 +96,7 @@ const Bankroll = () => {
     .reduce((sum, t) => sum + t.amount, 0)
 
   const netDeposits = totalDeposited - totalWithdrawn
-  const balance = netDeposits + sessionPL
+  const balance = netDeposits + sessionPL - activeCost
 
   if (loading) return <Loader />
 
@@ -117,6 +125,12 @@ const Bankroll = () => {
             {sessionPL >= 0 ? '+' : ''}{formatCurrency(sessionPL)}
           </span>
         </div>
+        {activeCost > 0 && (
+          <div className='stat-box'>
+            <span className='stat-box__label'>In Play</span>
+            <span className='stat-box__value error'>-{formatCurrency(activeCost)}</span>
+          </div>
+        )}
       </div>
 
       {transactions.length > 0 ? (

@@ -75,6 +75,12 @@ const Dashboard = () => {
   }
 
   const totalProfit = completedSessions.reduce((sum, s) => sum + calcProfit(s), 0)
+  const activeCost = activeSessions.reduce((sum, s) => {
+    const buyin = parseFloat(s.buyin) || 0
+    const expenses = parseFloat(s.expenses) || 0
+    const extra = s.type === 'cash' ? (parseFloat(s.rebuys) || 0) : (parseFloat(s.addonsCost) || 0)
+    return sum + buyin + extra + expenses
+  }, 0)
   const winningSessions = completedSessions.filter(s => calcProfit(s) > 0).length
   const winRate = completedSessions.length > 0
     ? ((winningSessions / completedSessions.length) * 100).toFixed(0)
@@ -94,13 +100,14 @@ const Dashboard = () => {
         <div className='bankroll-hero'>
           <div className='bankroll-hero__main'>
             <span className='bankroll-hero__label'>Bankroll</span>
-            <span className={`bankroll-hero__value ${(bankrollBalance + totalProfit) >= 0 ? 'success' : 'error'}`}>
-              {formatCurrency(bankrollBalance + totalProfit)}
+            <span className={`bankroll-hero__value ${(bankrollBalance + totalProfit - activeCost) >= 0 ? 'success' : 'error'}`}>
+              {formatCurrency(bankrollBalance + totalProfit - activeCost)}
             </span>
           </div>
           <div className='bankroll-hero__breakdown'>
             <span>Net deposits <strong>{formatCurrency(bankrollBalance)}</strong></span>
             <span>Session P/L <strong className={totalProfit >= 0 ? 'success' : 'error'}>{totalProfit >= 0 ? '+' : ''}{formatCurrency(totalProfit)}</strong></span>
+            {activeCost > 0 && <span>In play <strong className='error'>-{formatCurrency(activeCost)}</strong></span>}
           </div>
         </div>
       )}
