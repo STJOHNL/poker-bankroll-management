@@ -22,6 +22,7 @@ const Dashboard = () => {
   const [showNewSessionModal, setShowNewSessionModal] = useState(false)
   const [newSessionType, setNewSessionType] = useState('cash')
   const [prefillData, setPrefillData] = useState(null)
+  const [statsFilter, setStatsFilter] = useState('wtd')
 
   const handleCloseModal = () => {
     setShowNewSessionModal(false)
@@ -52,6 +53,29 @@ const Dashboard = () => {
   const activeSessions = sessions.filter(s => !s.endTime)
   const completedSessions = sessions.filter(s => s.endTime)
 
+  const getStatsStart = () => {
+    const now = new Date()
+    if (statsFilter === 'today') {
+      const start = new Date(now)
+      start.setHours(0, 0, 0, 0)
+      return start
+    }
+    if (statsFilter === 'wtd') {
+      const start = new Date(now)
+      start.setDate(now.getDate() - now.getDay())
+      start.setHours(0, 0, 0, 0)
+      return start
+    }
+    if (statsFilter === 'mtd') return new Date(now.getFullYear(), now.getMonth(), 1)
+    if (statsFilter === 'ytd') return new Date(now.getFullYear(), 0, 1)
+    return null
+  }
+
+  const statsStart = getStatsStart()
+  const filteredSessions = statsStart
+    ? completedSessions.filter(s => new Date(s.endTime) >= statsStart)
+    : completedSessions
+
   const calcProfit = (session) => {
     const buyin = parseFloat(session.buyin) || 0
     const expenses = parseFloat(session.expenses) || 0
@@ -74,19 +98,20 @@ const Dashboard = () => {
     return `${h}h ${m}m`
   }
 
-  const totalProfit = completedSessions.reduce((sum, s) => sum + calcProfit(s), 0)
+  const allTimeProfit = completedSessions.reduce((sum, s) => sum + calcProfit(s), 0)
+  const totalProfit = filteredSessions.reduce((sum, s) => sum + calcProfit(s), 0)
   const activeCost = activeSessions.reduce((sum, s) => {
     const buyin = parseFloat(s.buyin) || 0
     const expenses = parseFloat(s.expenses) || 0
     const extra = s.type === 'cash' ? (parseFloat(s.rebuys) || 0) : (parseFloat(s.addonsCost) || 0)
     return sum + buyin + extra + expenses
   }, 0)
-  const winningSessions = completedSessions.filter(s => calcProfit(s) > 0).length
-  const winRate = completedSessions.length > 0
-    ? ((winningSessions / completedSessions.length) * 100).toFixed(0)
+  const winningSessions = filteredSessions.filter(s => calcProfit(s) > 0).length
+  const winRate = filteredSessions.length > 0
+    ? ((winningSessions / filteredSessions.length) * 100).toFixed(0)
     : 0
-  const avgProfit = completedSessions.length > 0
-    ? totalProfit / completedSessions.length
+  const avgProfit = filteredSessions.length > 0
+    ? totalProfit / filteredSessions.length
     : 0
 
   if (loading) return <Loader />
@@ -100,13 +125,13 @@ const Dashboard = () => {
         <div className='bankroll-hero'>
           <div className='bankroll-hero__main'>
             <span className='bankroll-hero__label'>Bankroll</span>
-            <span className={`bankroll-hero__value ${(bankrollBalance + totalProfit - activeCost) >= 0 ? 'success' : 'error'}`}>
-              {formatCurrency(bankrollBalance + totalProfit - activeCost)}
+            <span className={`bankroll-hero__value ${(bankrollBalance + allTimeProfit - activeCost) >= 0 ? 'success' : 'error'}`}>
+              {formatCurrency(bankrollBalance + allTimeProfit - activeCost)}
             </span>
           </div>
           <div className='bankroll-hero__breakdown'>
             <span>Net deposits <strong>{formatCurrency(bankrollBalance)}</strong></span>
-            <span>Session P/L <strong className={totalProfit >= 0 ? 'success' : 'error'}>{totalProfit >= 0 ? '+' : ''}{formatCurrency(totalProfit)}</strong></span>
+            <span>Session P/L <strong className={allTimeProfit >= 0 ? 'success' : 'error'}>{allTimeProfit >= 0 ? '+' : ''}{formatCurrency(allTimeProfit)}</strong></span>
             {activeCost > 0 && <span>In play <strong className='error'>-{formatCurrency(activeCost)}</strong></span>}
           </div>
         </div>
@@ -114,6 +139,24 @@ const Dashboard = () => {
 
       {/* Session Stats */}
       {completedSessions.length > 0 && (
+        <>
+        <div className='stats-filter'>
+          {[
+            { key: 'today', label: 'Today' },
+            { key: 'wtd', label: 'This Week' },
+            { key: 'mtd', label: 'This Month' },
+            { key: 'ytd', label: 'This Year' },
+            { key: 'all', label: 'All Time' },
+          ].map(({ key, label }) => (
+            <button
+              key={key}
+              className={`stats-filter__pill${statsFilter === key ? ' stats-filter__pill--active' : ''}`}
+              onClick={() => setStatsFilter(key)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         <div className='stats-row'>
           <div className='stat-box'>
             <span className='stat-box__label'>Total P/L</span>
@@ -123,7 +166,7 @@ const Dashboard = () => {
           </div>
           <div className='stat-box'>
             <span className='stat-box__label'>Sessions</span>
-            <span className='stat-box__value'>{completedSessions.length}</span>
+            <span className='stat-box__value'>{filteredSessions.length}</span>
           </div>
           <div className='stat-box'>
             <span className='stat-box__label'>Win Rate</span>
@@ -136,6 +179,7 @@ const Dashboard = () => {
             </span>
           </div>
         </div>
+        </>
       )}
 
       {/* Active Sessions */}
@@ -152,11 +196,11 @@ const Dashboard = () => {
       )}
 
       {/* Completed Sessions */}
-      {completedSessions.length > 0 && (
+      {filteredSessions.length > 0 && (
         <div className='dashboard__section'>
           <h2>Session History</h2>
           <div className='session-history'>
-            {completedSessions.map(session => {
+            {filteredSessions.map(session => {
               const profit = calcProfit(session)
               const isProfit = profit >= 0
               const title = session.type === 'cash'

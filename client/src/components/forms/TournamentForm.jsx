@@ -9,7 +9,7 @@ const TournamentForm = ({ onSubmitCallback, parentData, prefillData, buttonText,
   const navigate = useNavigate()
 
   // Convert ISO date string or Date object to datetime-local format
-  const getLocalDateTime = (date) => {
+  const getLocalDateTime = date => {
     const d = date ? new Date(date) : new Date()
     const year = d.getFullYear()
     const month = String(d.getMonth() + 1).padStart(2, '0')
@@ -122,12 +122,8 @@ const TournamentForm = ({ onSubmitCallback, parentData, prefillData, buttonText,
               required
             />
             <datalist id='tournament-venue-list'>
-              <option value='Online - PokerStars' />
-              <option value='Online - GGPoker' />
-              <option value='Online - 888poker' />
-              <option value='Online - PartyPoker' />
-              <option value='Casino' />
-              <option value='Card Room' />
+              <option value='Online - WPT Gold' />
+              <option value='Rivers Portsmouth' />
               <option value='Home Game' />
             </datalist>
           </div>

@@ -9,7 +9,7 @@ const CashForm = ({ onSubmitCallback, parentData, prefillData, buttonText, showS
   const navigate = useNavigate()
 
   // Convert ISO date string or Date object to datetime-local format
-  const getLocalDateTime = (date) => {
+  const getLocalDateTime = date => {
     const d = date ? new Date(date) : new Date()
     const year = d.getFullYear()
     const month = String(d.getMonth() + 1).padStart(2, '0')
@@ -111,14 +111,7 @@ const CashForm = ({ onSubmitCallback, parentData, prefillData, buttonText, showS
             <datalist id='blinds-list'>
               <option value='0.01/0.02' />
               <option value='0.05/0.10 (0.05)' />
-              <option value='0.50/1' />
-              <option value='1/2' />
-              <option value='1/3' />
-              <option value='2/5' />
-              <option value='5/10' />
-              <option value='10/20' />
-              <option value='10/25' />
-              <option value='25/50' />
+              <option value='0.05/0.10/0.20' />
             </datalist>
           </div>
           <div className='form__field'>
